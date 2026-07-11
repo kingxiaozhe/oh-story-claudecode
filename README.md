@@ -116,6 +116,7 @@ npx skills add worldwonderer/oh-story-claudecode -y -g
 | `story-setup` | `/story-setup` `$story-setup` `/准备写书` | 环境部署 · 内置 CLI 适配 + 通用 Web AI/generic skills 路径（已有配置安全合并） |
 | `story` | `/story` `$story` `/网文` | 工具箱路由 · 模糊意图自动分发到对应 skill |
 | `story-long-write` | `/story-long-write` `/写长篇` | 长篇写作 · 大纲搭建、人物设定、正文输出 |
+| `story-flow` | `/story-flow` `/流水线写作` | 流水线管控 · 章节控制卡 + 分级门禁 + 冷读审查 + 状态回写落账，批量/无人值守写作（与 story-long-write 两个入口一个内核） |
 | `story-long-analyze` | `/story-long-analyze` | 长篇拆文 · 黄金三章、爽点设计、节奏分析 |
 | `story-long-scan` | `/story-long-scan` | 长篇扫榜 · 起点/番茄/晋江市场趋势 |
 | `story-short-write` | `/story-short-write` | 短篇写作 · 情绪设计、反转构思、精修出稿 |
@@ -131,6 +132,7 @@ npx skills add worldwonderer/oh-story-claudecode -y -g
 
 自然语言同样触发：
 - 「帮我开书」→ `story-long-write`
+- 「批量写 5 章」「自动写书」→ `story-flow`
 - 「这篇太 AI 了」→ `story-deslop`
 - 「把我的书导进来」→ `story-import`
 - 「沈栀现在什么状态」→ 自动 spawn `story-explorer` agent

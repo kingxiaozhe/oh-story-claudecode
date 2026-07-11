@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## Unreleased
+
+> 新增 story-flow：长篇流水线写作管控层（fork 特性）
+
+### 新增
+
+- **story-flow skill**：规格驱动的长篇批量写作状态机（N1-N8），在 story-long-write 之上加管控层——章节控制卡、三层分级门禁（确定性脚本 + 语义自审 + 冷读审查）、精确预算修复、状态回写落账、METRICS 度量、git 手改检测、断点续跑。"两个入口一个内核"：轻量日更走 `/story-long-write`，重管控批量走 `/story-flow`，共用同一套真值层与写作方法。含 `scripts/check_gate.py`（字数/对话占比/容差带/修复预算，机读 JSON）与一章完整闭环的示例项目（真实 5 轮门禁试跑产物）。设计决策与试点验收指标见 `skills/story-flow/references/architecture.md`。
+
 ## v0.6.21
 
 > 短篇写作参考栈瘦身：删掉长篇继承残留，建立短篇专属 format/craft/deslop/题材包体系（#206）

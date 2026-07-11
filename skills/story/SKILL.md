@@ -14,6 +14,7 @@ metadata: {"openclaw":{"source":"https://github.com/worldwonderer/oh-story-claud
 | 用户意图 | 关键词示例 | 路由到 |
 |---|---|---|
 | 写长篇 | 开书、写大纲、长篇、连载 | `/story-long-write` |
+| 流水线写作 | 流水线、自动写书、批量写章、无人值守 | `/story-flow` |
 | 写短篇 | 短篇、盐言、一万字 | `/story-short-write` |
 | 长篇拆文 | 拆文、分析这本书、黄金三章 | `/story-long-analyze` |
 | 短篇拆文 | 拆短篇、分析这个故事 | `/story-short-analyze` |
