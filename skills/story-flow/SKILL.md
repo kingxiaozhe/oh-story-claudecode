@@ -2,13 +2,15 @@
 name: story-flow
 version: 0.1.0
 description: "长篇网文流水线写作管控层。规格驱动 + 状态机逐章闭环：控制卡 → 写手子代理 → 分级门禁 → 冷读审查 → 状态回写 → 度量落盘，支持断点续跑与手改检测。触发方式：/story-flow、「流水线写作」「自动写书」「批量写章」「无人值守写作」「继续跑流水线」。"
-metadata: {"openclaw":{"source":"https://github.com/kingxiaozhe/oh-story-claudecode"}}
+metadata: {"openclaw":{"source":"https://github.com/worldwonderer/oh-story-claudecode"}}
 ---
 # story-flow：长篇流水线写作管控层
 
 你是写作流水线的调度员。你的任务不是写正文——写正文由写手子代理（或降级 solo 模式）按 `story-long-write` 的方法完成——你的任务是**让每一章都走完同一条受控闭环**：控制卡 → 写作 → 门禁 → 回写 → 落账。
 
-**与现有 skills 的关系（两个入口一个内核）**：`/story-long-write` 是轻量入口（人陪跑、日更节奏）；`/story-flow` 是重管控入口（批量、无人值守、留痕度量）。两者共用同一套项目真值层（`设定/`、`大纲/`、`追踪/`、`对标/`）与写作方法（story-long-write 全部 references）。story-flow 只新增管控物：`控制卡/`、`大纲/章节清单_第X卷.md`、`追踪/METRICS.md`、`追踪/门禁/`、`.flow-status.json`。
+**与现有 skills 的关系（两个入口一个内核）**：`/story-long-write` 是轻量入口（人陪跑、日更节奏）；`/story-flow` 是重管控入口（批量、无人值守、留痕度量）。两者共用同一套项目真值层（`设定/`、`大纲/`、`追踪/`、`对标/`）与写作方法（story-long-write 全部 references）。story-flow 只新增管控物：`控制卡/`、`大纲/章节清单_第X卷.md`、`追踪/METRICS.md`、`追踪/门禁/`、`设定/门禁配置.json`、`.flow-status.json`。质量深审对接现有 `/story-review`（见 N6），不自建审稿体系。
+
+**上游引用降级（全局规则）**：本 skill 引用的 story-long-write / story-review / story-deslop 文件若找不到（改名、未部署），先回对应 skill 的 SKILL.md 参考文件表重新定位；仍找不到则降级执行并在汇报与门禁产物中留痕（如 `linter:skipped`、`fallback:协议缺失`），禁止凭记忆默写协议内容。
 
 ## 铁律（不可违反）
 
@@ -58,8 +60,8 @@ START ─▶ [N1 初始化] 断点恢复·三方核对·手改检测
 ## 全局规则
 
 **状态落盘**：每进入一个节点，覆盖写入 `{项目目录}/.flow-status.json` 单行 JSON：
-`{"node":"N4","volume":"卷1","chapter":"C-0012","detail":"第2轮门禁：还差120字对话","state":"running","rounds":2,"at":"HH:MM:SS"}`
-detail 写大白话（非工程师扫一眼能懂）；暂停等人时 `state:"paused_for_human"`，全部完成 `"done"`。格式与 cm-workflow 状态条协议兼容，可复用其可视化。
+`{"node":"N4","volume":"卷1","chapter":"C-0012","detail":"第2轮门禁：还差120字对话","state":"running","rounds":2,"at":"2026-07-11 16:05:00"}`
+`node/state/at` 三字段必写（`at` 用完整日期时间，N1 手改检测依赖它）；`volume/chapter/rounds` 已知即写，读取方须容忍缺失。detail 写大白话（非工程师扫一眼能懂）；暂停等人时 `state:"paused_for_human"`，全部完成 `"done"`。格式与 cm-workflow 状态条协议兼容，可复用其可视化。
 
 **暂停（仅限以下情形，其余自主决策并留痕）**：主线走向级歧义、主要角色死亡/黑化等不可逆转折且大纲未明确、平台审核红线风险、连续 2 章门禁分流到人工、环境阻塞。每次暂停在 METRICS 人工介入 +1 并注明原因。
 
@@ -67,7 +69,7 @@ detail 写大白话（非工程师扫一眼能懂）；暂停等人时 `state:"p
 
 **子代理与降级**：写手/冷读代理按 `.claude/agents/` → `.opencode/agents/` → `.codex/agents/*.toml` 顺序找；找不到或 spawn 失败则 solo 执行并在汇报中标注 `Fallback: agent unavailable -> solo`（沿用本仓库降级惯例）。solo 写作时，N4 语义自审必须换一次视角重读（先冷读后对卡），弥补自审盲区。
 
-**度量**：`追踪/METRICS.md` 每章一行：轮次、门禁失败明细、最终字数、人工介入、备注。它是流水线是否达标的唯一数据源（验收指标见 [references/architecture.md](references/architecture.md)）。
+**度量**：`追踪/METRICS.md` 每章一行：轮次、门禁失败明细、最终字数（全码点口径）、人工介入、waive、备注。它是流水线是否达标的唯一数据源（验收指标见 [references/architecture.md](references/architecture.md)），也是 N6 waive 触发的计数来源。
 
 ## 参考文件
 

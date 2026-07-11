@@ -1,0 +1,7 @@
+{
+  "dialog_min": 25,
+  "dialog_max": 60,
+  "tolerance_pct": 2,
+  "dialog_tolerance_pt": 3,
+  "long_para_chars": 250
+}
