@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 ### 新增
 
 - **story-flow skill**：规格驱动的长篇批量写作状态机（N1-N8），在 story-long-write 之上加管控层——章节控制卡、三层分级门禁（确定性脚本 + 语义自审 + 冷读审查）、精确预算修复、状态回写落账、METRICS 度量、git 手改检测、断点续跑。"两个入口一个内核"：轻量日更走 `/story-long-write`，重管控批量走 `/story-flow`，共用同一套真值层与写作方法。含 `scripts/check_gate.py`（字数/对话占比/容差带/修复预算，机读 JSON）与一章完整闭环的示例项目（真实 5 轮门禁试跑产物）。设计决策与试点验收指标见 `skills/story-flow/references/architecture.md`。
+- **story-flow v0.2**（4 章真实试点后迭代，试点数据：回炉中位数 1 轮、人工介入 0、冷读均分 4.0）：语义对卡审查子代理化（调度员上下文不随章数膨胀）、写手派发指令模板、N3 卡派生五检、N5 热度扫描（角色/支线遗忘报警）、check_gate 文风指纹、N6 修正指令自演化纪律（≥2 次固化/自动撤销）、批次验收包 + 作者巡检点 + 冷读抽检开关、METRICS 成本列；破坏性测试（手改/幽灵章节/回写中断）三场景验证通过。
 
 ## v0.6.21
 

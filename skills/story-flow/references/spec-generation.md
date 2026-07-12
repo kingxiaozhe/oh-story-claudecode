@@ -29,8 +29,8 @@
 ### Step 4：初始化管控物
 
 - `控制卡/`、`追踪/门禁/` 空目录
-- `追踪/METRICS.md` 表头（| 章 | 轮次 | 门禁失败明细 | 最终字数 | 人工介入 | waive | 备注 |，字数一律全码点口径）
-- `设定/门禁配置.json`（全书级阈值，默认值：`{"dialog_min":25,"dialog_max":60,"tolerance_pct":2,"dialog_tolerance_pt":3,"long_para_chars":250}`；按题材与用户偏好调整后落盘——对话流题材可上调占比区间，单章字数区间不在此文件，见控制卡）
+- `追踪/METRICS.md` 表头（| 章 | 轮次 | 门禁失败明细 | 最终字数 | 人工介入 | waive | 成本 | 备注 |，字数一律全码点口径）
+- `设定/门禁配置.json`（全书级阈值，默认值：`{"dialog_min":25,"dialog_max":60,"tolerance_pct":2,"dialog_tolerance_pt":3,"long_para_chars":250,"cold_read_mode":"every","author_checkpoint_every":null}`；按题材与用户偏好调整后落盘——对话流题材可上调占比区间；`author_checkpoint_every` 设 N 则每 N 章暂停等作者验收；单章字数区间不在此文件，见控制卡）
 - `.flow-status.json` 写 `{"node":"N0","state":"ready","at":"YYYY-MM-DD HH:MM:SS"}`
 - 项目非 git 仓库时建议 `git init`（手改检测降级为 mtime 时如实告知精度损失）
 

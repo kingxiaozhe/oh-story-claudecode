@@ -46,13 +46,22 @@ def analyze(path):
     total = len(raw.strip())
     dialog = sum(len(m) for m in DIALOG_RE.findall(raw))
     cn = len(CN_RE.findall(raw))
-    long_paras = []
+    long_paras, para_sent_counts = [], []
     for i, p in enumerate([p.strip() for p in re.split(r"\n\s*\n", raw) if p.strip()], 1):
         if p.startswith("#") or p.startswith("```"):
             continue
         if len(p) > DEFAULTS["long_para_chars"]:
             long_paras.append({"para_index": i, "chars": len(p), "head": p[:20]})
-    return total, dialog, cn, long_paras
+        para_sent_counts.append(max(len(re.findall(r"[。！？…]+", p)), 1))
+    # 文风指纹（仅信息输出，不参与门禁判定；N6 用于跨章漂移对比）
+    n_sent = sum(para_sent_counts) or 1
+    fingerprint = {
+        "sent_avg_chars": round(total / n_sent, 1),
+        "single_sent_para_ratio_pct": round(
+            sum(1 for c in para_sent_counts if c == 1) / len(para_sent_counts) * 100, 1)
+        if para_sent_counts else 0.0,
+    }
+    return total, dialog, cn, long_paras, fingerprint
 
 
 def main():
@@ -95,7 +104,7 @@ def main():
     if cfg["tolerance_pct"] < 0 or cfg["dialog_tolerance_pt"] < 0:
         die("容差不得为负")
 
-    total, dialog, cn, long_paras = analyze(args.file)
+    total, dialog, cn, long_paras, fingerprint = analyze(args.file)
     ratio = (dialog / total * 100.0) if total else 0.0
     checks, budget = [], {}
 
@@ -141,7 +150,7 @@ def main():
     hard_fail = [c for c in checks if c["level"] == "budget" and c["status"] == "fail"]
     result = {"file": args.file, "pass": not hard_fail, "total_chars": total,
               "cn_chars": cn, "dialog_ratio_pct": round(ratio, 1),
-              "checks": checks, "repair_budget": budget}
+              "fingerprint": fingerprint, "checks": checks, "repair_budget": budget}
 
     if args.json:
         print(json.dumps(result, ensure_ascii=False, indent=2))

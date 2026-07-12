@@ -1,6 +1,6 @@
 ---
 name: story-flow
-version: 0.1.0
+version: 0.2.0
 description: "长篇网文流水线写作管控层。规格驱动 + 状态机逐章闭环：控制卡 → 写手子代理 → 分级门禁 → 冷读审查 → 状态回写 → 度量落盘，支持断点续跑与手改检测。触发方式：/story-flow、「流水线写作」「自动写书」「批量写章」「无人值守写作」「继续跑流水线」。"
 metadata: {"openclaw":{"source":"https://github.com/worldwonderer/oh-story-claudecode"}}
 ---
@@ -63,7 +63,7 @@ START ─▶ [N1 初始化] 断点恢复·三方核对·手改检测
 `{"node":"N4","volume":"卷1","chapter":"C-0012","detail":"第2轮门禁：还差120字对话","state":"running","rounds":2,"at":"2026-07-11 16:05:00"}`
 `node/state/at` 三字段必写（`at` 用完整日期时间，N1 手改检测依赖它）；`volume/chapter/rounds` 已知即写，读取方须容忍缺失。detail 写大白话（非工程师扫一眼能懂）；暂停等人时 `state:"paused_for_human"`，全部完成 `"done"`。格式与 cm-workflow 状态条协议兼容，可复用其可视化。
 
-**暂停（仅限以下情形，其余自主决策并留痕）**：主线走向级歧义、主要角色死亡/黑化等不可逆转折且大纲未明确、平台审核红线风险、连续 2 章门禁分流到人工、环境阻塞。每次暂停在 METRICS 人工介入 +1 并注明原因。
+**暂停（仅限以下情形，其余自主决策并留痕）**：主线走向级歧义、主要角色死亡/黑化等不可逆转折且大纲未明确、平台审核红线风险、连续 2 章门禁分流到人工、环境阻塞；以及**作者巡检点**（`设定/门禁配置.json` 的 `author_checkpoint_every`=N 时每 N 章暂停出验收包，属计划内暂停不计人工介入）。其余每次暂停在 METRICS 人工介入 +1 并注明原因。
 
 **任务清单镜像**：N2 进批次时把本批章节镜像到内置任务清单（TaskCreate，一章一条），N3 置 in_progress，N5 置 completed；断点恢复时已完成章直接跳过，不重复创建。
 
