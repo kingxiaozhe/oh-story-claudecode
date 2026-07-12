@@ -26,7 +26,8 @@ metadata: {"openclaw":{"source":"https://github.com/worldwonderer/oh-story-claud
 
 | 场景 | 触发条件 | 执行 |
 |------|----------|------|
-| **初始化流水线** | 「建流水线」/ 项目无 `大纲/章节清单_第X卷.md` | 加载 [references/spec-generation.md](references/spec-generation.md) |
+| **初始化流水线（新书）** | 「建流水线」/ 项目无 `大纲/章节清单_第X卷.md` | 加载 [references/spec-generation.md](references/spec-generation.md) |
+| **存量书接管（续写）** | 「接管我的书」「继续写我的小说」且有已发布正文 | 先 `/story-import` 逆向重建真值层，再走 spec-generation.md「存量书接管」节 |
 | **续跑 / 批量写** | 「继续跑」「批量写N章」且清单已存在 | 从 N1 进入状态机（见下） |
 | **变更** | 「改大纲」「剧情改向」且已有完成章节 | 加载 spec-generation.md 的「变更模式」 |
 | **查进度** | 「流水线状态」「写到哪了」 | 读 `.flow-status.json` + METRICS + 章节清单，大白话汇报 |
