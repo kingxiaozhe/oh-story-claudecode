@@ -34,6 +34,8 @@
 - 用户说"日更""续写""继续写"
 - 目标：每次会话写 2-3 章（4000-9000 字）
 
+> **逐章生产闭环（照做操作层）**：本工作流的每章 write→QC→fix→track→commit 有一份可照做的实战清单 `references/chapter-qc-playbook.md`，配套一键质检脚本 `scripts/qc-chapter.sh`（一条命令跑完 标点归一→ai-patterns→退化→扩展扫描[软禁词/元信息/卷号泄漏/英文字母]→字数）。Step 2 落盘后与 Step 3 收尾优先用该脚本，按其 FAIL 逐条改写、改完重跑至全 PASS。playbook 只管「怎么稳定跑过质检并留痕」，创作层决策仍以本文件与 SKILL.md 为准。
+
 ---
 
 ## Step 1：快速上下文加载
@@ -138,9 +140,10 @@
 4. **钩子检查**：每章章尾是否有往下看的理由（低压/过场章弱钩子或阶段目标即可，不强求强钩子，按细纲章节定位；见 references/outline-structure-theory.md「章节定位与张弛」）；如新版细纲有「结尾设定和钩子」，检查正文是否兑现收束状态、未解决问题和下一章推动力
 5. **对照细纲核对**（正文有没有按细纲写到）：新版细纲存在时，核对正文是否消费了内容概括五段式、情节安排多线、人物关系变化/出场顺序、代价兑现/收益兑现；并加三条 craft 兑现核对（不达标→修复）：① 爽点出手前是否有可指认的危机/期待铺垫段落？指不出=空洞 → 回 Step 2 补铺垫情节点（plot-emotion-system 倒推法）；② 装逼/打脸/揭露章是否写出在场配角差异化反应（集体震惊/各异），还是只写主角动作？没有 → 补在场配角反应（plot-core-methods）；③ 详略是否按目的词（爽点/卖点点展开、过渡点带过、信息密度交替），还是均匀注水？均匀 → 删过渡、扩爽点点。旧版细纲只核对核心事件、目标情绪、章首/章尾钩子和字数目标
 6. **伏笔盘点（仅本轮增量）**：只确认本批新增/推进/回收的伏笔已写入 `追踪/伏笔.md` 并更新状态；不得在日更流程中通读所有 session 或扫描全部正文做全量伏笔审计。全量伏笔审计只在 `/story-review` 或用户明确要求"全面检查伏笔"时执行
-7. **确定性收尾**：主会话对本批实际落盘正文运行 `node scripts/check-ai-patterns.js --check --fail-on=blocking 正文/第XXX章_*.md`；blocking 先改正文并复扫，advisory 只作读感提示，功能性写法标 `[需复核]`。
-   再运行 `node scripts/normalize-punctuation.js 正文/第XXX章_*.md`（默认 `--quote-mode keep`）清理无功能省略号、破折号、双连字符和独立分隔线。narrative-writer agent 不运行这些脚本。
-   - **退化防护**：再跑 `node scripts/check-degeneration.js --check 正文/第XXX章_*.md`。blocking 只重写受影响章节，最多 2 次；仍失败就报告证据让用户定夺。advisory 先看例外，确属工程词泄漏或退化再改。
+7. **确定性收尾**：推荐用一键脚本 `bash scripts/qc-chapter.sh 正文/第XXX章_*.md`（可带 `TARGET=章目标字数`）——它已把下述三脚本按**正确顺序**（先 normalize 就地清破折号，再 ai-patterns 只报需手改的 blocking，一遍到位）+ 扩展扫描 + 字数统计收成一条命令，并以退出码 0/1 给出全 PASS/FAIL 汇总。按其 FAIL 逐条改写（改写套路见 `references/chapter-qc-playbook.md`），改完重跑至全 PASS。
+   - 等价的分步命令（脚本内部即这几条）：`node scripts/check-ai-patterns.js --check --fail-on=blocking`（blocking 先改正文复扫，advisory 只作读感提示，功能性写法标 `[需复核]`）；`node scripts/normalize-punctuation.js`（默认 `--quote-mode keep`，清无功能省略号/破折号/双连字符/分隔线）；`node scripts/check-degeneration.js --check`（blocking 只重写受影响章节，最多 2 次，仍失败报告证据让用户定夺）。narrative-writer agent 不运行这些脚本。
+   - **扩展扫描（本闭环额外必查，脚本已内置）**：除 banned-words/元信息外，正文还须无 **卷号泄漏**（`卷一/卷二`——多卷连写最易把「卷X里…」写进正文）与 **英文字母**（`[A-Za-z]`——连写手误把英文词混入中文正文，如 `这two件事`）；F 编号（`F##`）绝不能漏进正文。命中即改成世界内表达。
+   - **执行顺序 & 补字数后必复扫**：normalize 必须先于 ai-patterns；每次补字数/改写后重跑脚本（改写极易新引入 not-is 或英文手误）；插段后一眼查重复行。详见 `references/chapter-qc-playbook.md`。
 
 > 完整 Phase 5 检查清单见 SKILL.md Phase 5。
 
