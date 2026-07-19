@@ -1,6 +1,6 @@
 ---
 name: story-flow
-version: 0.2.5
+version: 0.2.6
 description: "长篇网文流水线写作管控层。规格驱动 + 状态机逐章闭环：控制卡 → 写手子代理 → 分级门禁 → 冷读审查 → 状态回写 → 度量落盘，支持断点续跑与手改检测。触发方式：/story-flow、「流水线写作」「自动写书」「批量写章」「无人值守写作」「继续跑流水线」。"
 metadata: {"openclaw":{"source":"https://github.com/worldwonderer/oh-story-claudecode"}}
 ---

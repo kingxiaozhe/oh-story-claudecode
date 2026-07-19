@@ -46,13 +46,22 @@ def analyze(path):
     total = len(raw.strip())
     dialog = sum(len(m) for m in DIALOG_RE.findall(raw))
     cn = len(CN_RE.findall(raw))
-    long_paras, para_sent_counts = [], []
+    long_paras, para_sent_counts, sent_lens = [], [], []
     for i, p in enumerate([p.strip() for p in re.split(r"\n\s*\n", raw) if p.strip()], 1):
         if p.startswith("#") or p.startswith("```"):
             continue
         if len(p) > DEFAULTS["long_para_chars"]:
             long_paras.append({"para_index": i, "chars": len(p), "head": p[:20]})
         para_sent_counts.append(max(len(re.findall(r"[。！？…]+", p)), 1))
+        sent_lens.extend(len(s) for s in (x.strip() for x in re.split(r"[。！？…]+", p)) if s)
+    # 匀速节拍哨兵（harshaneel/humanize 信号B本地化：连续等长中长句=机器节拍。
+    # 等长=相邻句字数差 ≤3；<8 字短句本身就是破节拍的重拍，重置连跑）
+    uniform_run_max = 1 if sent_lens else 0
+    run = 1
+    for a, b in zip(sent_lens, sent_lens[1:]):
+        run = run + 1 if (a >= 8 and b >= 8 and abs(a - b) <= 3) else 1
+        if run > uniform_run_max:
+            uniform_run_max = run
     # 文风指纹（仅信息输出，不参与门禁判定；N6 用于跨章漂移对比）
     n_sent = sum(para_sent_counts) or 1
     fingerprint = {
@@ -62,6 +71,11 @@ def analyze(path):
         if para_sent_counts else 0.0,
         # 逗号密度哨兵（声口滚雪球乱码的早期指标，来源：voice-loop 实战教训）
         "comma_density_pct": round(raw.count("，") / cn * 100, 1) if cn else 0.0,
+        # 匀速节拍哨兵：≥5 由 N4 记 advisory「机器节拍」（分级规则见 gate-policy.md）
+        "sent_len_uniform_run_max": uniform_run_max,
+        "short_sent_ratio_pct": round(
+            sum(1 for L in sent_lens if L <= 6) / len(sent_lens) * 100, 1)
+        if sent_lens else 0.0,
     }
     return total, dialog, cn, long_paras, fingerprint
 
