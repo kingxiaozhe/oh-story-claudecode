@@ -1,6 +1,6 @@
 ---
 name: story-flow
-version: 0.2.2
+version: 0.2.3
 description: "长篇网文流水线写作管控层。规格驱动 + 状态机逐章闭环：控制卡 → 写手子代理 → 分级门禁 → 冷读审查 → 状态回写 → 度量落盘，支持断点续跑与手改检测。触发方式：/story-flow、「流水线写作」「自动写书」「批量写章」「无人值守写作」「继续跑流水线」。"
 metadata: {"openclaw":{"source":"https://github.com/worldwonderer/oh-story-claudecode"}}
 ---
@@ -21,6 +21,7 @@ metadata: {"openclaw":{"source":"https://github.com/worldwonderer/oh-story-claud
 5. **advisory 只留痕不阻断**：linter 的 advisory 级发现记入门禁产物后放行，不进回炉轮次。
 6. **正典只有一份**：`设定/` 与 `追踪/` 是唯一真相；控制卡、速记、审查报告都是派生视图，冲突时以正典为准并修派生侧。
 7. **已完成章节不推翻**：需求/大纲变更走变更模式（增量标记新增/修改/作废），不重写已过门禁的章。
+8. **段落级优化循环是唯一写作程序**：写一段 → 按固定锚点文件（声口.md → 文风.md → 文风基线）优化一段 → 防雪球自检 → 下一段；**整章一次性输出在任何情况下都被禁止**，每段绝不模仿上一段成品风格。
 
 ## 场景路由
 
