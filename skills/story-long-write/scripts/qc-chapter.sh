@@ -16,6 +16,8 @@
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Windows 的 python3（Store 占位程序，exit 49）不可裸调，按 python3->python->py 探测解释器
+for PYBIN in python3 python py; do "$PYBIN" -c "" 2>/dev/null && break; done
 TARGET="${TARGET:-2200}"
 FLOOR=$(( TARGET * 90 / 100 ))
 CEIL=$(( TARGET * 110 / 100 ))
@@ -62,7 +64,7 @@ for f in "$@"; do
   fi
 
   # 5) 字数
-  wc_out=$(python3 -c "from pathlib import Path;print(len(Path('$f').read_text(encoding='utf-8')))")
+  wc_out=$("$PYBIN" -c "from pathlib import Path;print(len(Path('$f').read_text(encoding='utf-8')))")
   if [ "$wc_out" -lt "$FLOOR" ]; then
     echo "  字数          : $wc_out ✗（低于 90% 放行线 $FLOOR，需补实义内容到 [$TARGET,$CEIL]）"
     overall=1
