@@ -60,6 +60,8 @@ def analyze(path):
         "single_sent_para_ratio_pct": round(
             sum(1 for c in para_sent_counts if c == 1) / len(para_sent_counts) * 100, 1)
         if para_sent_counts else 0.0,
+        # 逗号密度哨兵（声口滚雪球乱码的早期指标，来源：voice-loop 实战教训）
+        "comma_density_pct": round(raw.count("，") / cn * 100, 1) if cn else 0.0,
     }
     return total, dialog, cn, long_paras, fingerprint
 
