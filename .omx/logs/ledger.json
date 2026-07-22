@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ledger_43eafacc-7c5",
+    "createdAt": "2026-07-22T14:29:56.052Z",
+    "metadata": {},
+    "kind": "session",
+    "action": "session_start",
+    "detail": "Session started on main"
+  },
+  {
+    "id": "ledger_2e61b0a2-312",
+    "createdAt": "2026-07-22T14:29:56.052Z",
+    "metadata": {},
+    "kind": "session",
+    "action": "session_mark_command",
+    "detail": "session:start"
+  },
+  {
+    "id": "ledger_73b079b0-79f",
+    "createdAt": "2026-07-22T14:29:56.053Z",
+    "metadata": {},
+    "kind": "session",
+    "action": "session_mark_command",
+    "detail": "omx:session"
+  },
+  {
+    "id": "ledger_7ed9824c-aff",
+    "createdAt": "2026-07-22T14:29:56.148Z",
+    "metadata": {},
+    "kind": "session",
+    "action": "session_mark_command",
+    "detail": "omx:hud"
+  },
+  {
+    "id": "ledger_7d568df1-23d",
+    "createdAt": "2026-07-22T14:35:12.074Z",
+    "metadata": {},
+    "kind": "session",
+    "action": "session_mark_command",
+    "detail": "omx:hud"
+  },
+  {
+    "id": "ledger_aaa48a1f-0a2",
+    "createdAt": "2026-07-22T14:40:44.776Z",
+    "metadata": {},
+    "kind": "session",
+    "action": "session_start",
+    "detail": "Session started on main"
+  },
+  {
+    "id": "ledger_6325c27d-edc",
+    "createdAt": "2026-07-22T14:40:44.777Z",
+    "metadata": {},
+    "kind": "session",
+    "action": "session_mark_command",
+    "detail": "session:start"
+  },
+  {
+    "id": "ledger_61dcc389-d3c",
+    "createdAt": "2026-07-22T14:40:44.782Z",
+    "metadata": {},
+    "kind": "session",
+    "action": "session_mark_command",
+    "detail": "omx:session"
+  },
+  {
+    "id": "ledger_994ad17b-978",
+    "createdAt": "2026-07-22T14:40:44.897Z",
+    "metadata": {},
+    "kind": "session",
+    "action": "session_mark_command",
+    "detail": "omx:hud"
+  }
+]
