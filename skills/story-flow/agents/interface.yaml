@@ -1,0 +1,22 @@
+interface:
+  display_name: "Story Flow"
+  short_description: "Run a gated, resumable long-form fiction chapter pipeline."
+  default_prompt: "Use story-flow to resume the current book through control card, writing gate, review, and tracker writeback."
+compatibility:
+  canonical_format: "agent-skills"
+  adapter_targets:
+    - "openai"
+    - "generic"
+  activation:
+    mode: "auto"
+    paths: []
+  execution:
+    context: "inline"
+    shell: "bash"
+  trust:
+    source_tier: "local"
+    remote_inline_execution: "forbid"
+    remote_metadata_policy: "allow-metadata-only"
+  degradation:
+    openai: "solo-with-explicit-fallback-log"
+    generic: "solo-with-explicit-fallback-log"
